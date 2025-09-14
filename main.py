@@ -50,11 +50,10 @@ def bot_status_tool(_: str) -> str:
     except Exception as e:
         return f"Erreur lors de la récupération du status: {e}"
 
-@mcp.resource("say://{text}")
-def say_resource(text: str) -> str:
+@mcp.tool("say")
+def say_tool(text: str) -> str:
     """Envoie un message via le bot Minecraft"""
     try:
-        # Appel à l'API locale pour faire parler le bot Minecraft
         response = requests.post(
             f"{BASE_URL}/chat/say",
             json={"message": text},
@@ -142,8 +141,8 @@ def mine_block_tool(block_type: str, max_distance: int = 32) -> str:
     except Exception as e:
         return f"Erreur lors du minage: {e}"
 
-@mcp.resource("move_to://{x}/{y}/{z}")
-def move_to_resource(x: float, y: float, z: float) -> str:
+@mcp.tool("move_to")
+def move_to_tool(x: float, y: float, z: float) -> str:
     """
     Demande au bot de se déplacer aux coordonnées spécifiées (x, y, z).
     """
@@ -159,8 +158,8 @@ def move_to_resource(x: float, y: float, z: float) -> str:
     except Exception as e:
         return f"Erreur lors du déplacement: {e}"
 
-@mcp.resource("follow_player://{player_name}")
-def follow_player_resource(player_name: str, distance: int = 3, continuous: bool = False) -> str:
+@mcp.tool("follow_player")
+def follow_player_tool(player_name: str, distance: int = 3, continuous: bool = False) -> str:
     """
     Demande au bot de suivre un joueur donné (ou le plus proche si non spécifié).
     """
