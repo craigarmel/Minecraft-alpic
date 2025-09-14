@@ -6,7 +6,7 @@ from fastmcp import FastMCP
 import requests
 
 # Create server
-mcp = FastMCP("Echo Server")
+mcp = FastMCP("SSH_MCP", port=3000, stateless_http=True, debug=True)
 
 
 @mcp.tool
