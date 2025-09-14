@@ -39,7 +39,7 @@ def echo_prompt(text: str) -> str:
 def bot_status_tool(_: str) -> str:
     """Récupère le status du bot depuis l'URL spécifiée et vérifie si data:connected est true"""
     try:
-        response = requests.get("https://hydrophilous-polyzoarial-miranda.ngrok-free.app/bot/status", timeout=5)
+        response = requests.get(f"{BASE_URL}/bot/status", timeout=5)
         response.raise_for_status()
         data = response.json()
         connected = data.get("data", {}).get("connected", False)
@@ -56,7 +56,7 @@ def say_tool(text: str) -> str:
     try:
         # Appel à l'API locale pour faire parler le bot Minecraft
         response = requests.post(
-            "http://hydrophilous-polyzoarial-miranda.ngrok-free.app/chat/say",
+            f"{BASE_URL}/chat/say",
             json={"message": text},
             timeout=5
         )
@@ -72,7 +72,7 @@ def craft_item_tool(item: str, count: int = 1) -> str:
         return "L'item doit être une chaîne non vide."
     try:
         response = requests.post(
-            "http://hydrophilous-polyzoarial-miranda.ngrok-free.app/crafting/item",
+            f"{BASE_URL}/crafting/item",
             json={"item": item, "count": count},
             timeout=10
         )
@@ -82,13 +82,13 @@ def craft_item_tool(item: str, count: int = 1) -> str:
     except Exception as e:
         return f"Erreur lors du craft: {e}"
     
-@mcp.resource("bridge_status")
-def bridge_status_resource() -> dict:
+@mcp.tool("bridge_status")
+def bridge_status_tool() -> dict:
     """
     Retourne le statut du serveur bridge et du bot.
     """
     try:
-        response = requests.get("http://hydrophilous-polyzoarial-miranda.ngrok-free.app/health", timeout=5)
+        response = requests.get(f"{BASE_URL}/health", timeout=5)
         response.raise_for_status()
         data = response.json()
         return {
@@ -103,13 +103,13 @@ def bridge_status_resource() -> dict:
             "message": f"Erreur lors de la récupération du statut: {e}"
         }
 
-@mcp.resource("inventory")
-def inventory_resource() -> dict:
+@mcp.tool("inventory")
+def inventory_tool() -> dict:
     """
     Récupère l'inventaire du bot Minecraft via l'API locale.
     """
     try:
-        response = requests.get("http://hydrophilous-polyzoarial-miranda.ngrok-free.app/inventory", timeout=5)
+        response = requests.get(f"{BASE_URL}/inventory", timeout=5)
         response.raise_for_status()
         data = response.json()
         inventory = data.get("items", [])
@@ -132,7 +132,7 @@ def mine_block_tool(block_type: str, max_distance: int = 32) -> str:
         return "Le type de bloc doit être une chaîne non vide."
     try:
         response = requests.post(
-            "http://hydrophilous-polyzoarial-miranda.ngrok-free.app/mining/block",
+            f"{BASE_URL}/mining/block",
             json={"blockType": block_type, "maxDistance": max_distance},
             timeout=10
         )
@@ -149,7 +149,7 @@ def move_to_tool(x: float, y: float, z: float) -> str:
     """
     try:
         response = requests.post(
-            "http://hydrophilous-polyzoarial-miranda.ngrok-free.app/movement/moveTo",
+            f"{BASE_URL}/movement/moveTo",
             json={"x": x, "y": y, "z": z},
             timeout=10
         )
@@ -166,7 +166,7 @@ def follow_player_tool(player_name: str = "", distance: int = 3, continuous: boo
     """
     try:
         response = requests.post(
-            "http://hydrophilous-polyzoarial-miranda.ngrok-free.app/movement/follow",
+            f"{BASE_URL}/movement/follow",
             json={"playerName": player_name, "distance": distance, "continuous": continuous},
             timeout=10
         )
@@ -183,7 +183,7 @@ def stop_movement_tool() -> str:
     """
     try:
         response = requests.post(
-            "http://hydrophilous-polyzoarial-miranda.ngrok-free.app/movement/stop",
+            f"{BASE_URL}/movement/stop",
             timeout=5
         )
         response.raise_for_status()
@@ -192,13 +192,13 @@ def stop_movement_tool() -> str:
     except Exception as e:
         return f"Erreur lors de l'arrêt du mouvement: {e}"
 
-@mcp.resource("position")
-def position_resource() -> dict:
+@mcp.tool("position")
+def position_tool() -> dict:
     """
     Récupère la position actuelle du bot Minecraft.
     """
     try:
-        response = requests.get("http://hydrophilous-polyzoarial-miranda.ngrok-free.app/movement/position", timeout=5)
+        response = requests.get(f"{BASE_URL}/movement/position", timeout=5)
         response.raise_for_status()
         position = response.json()
         return position
