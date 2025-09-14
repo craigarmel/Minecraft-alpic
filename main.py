@@ -29,8 +29,8 @@ def echo_template(text: str) -> str:
 def echo_prompt(text: str) -> str:
     return text
 
-@mcp.prompt("bot_status")
-def bot_status_prompt(_: str) -> str:
+@mcp.tool("bot_status")
+def bot_status_tool(_: str) -> str:
     """Récupère le status du bot depuis l'URL spécifiée et vérifie si data:connected est true"""
     try:
         response = requests.get("https://hydrophilous-polyzoarial-miranda.ngrok-free.app/bot/status", timeout=5)
